@@ -14,6 +14,6 @@ public class PersonPair {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "\n\t\t" + persons.elementAt(0) + "---" + persons.elementAt(1) + "(" + strength + ")";
+		return "\n\t" + persons.elementAt(0) + "---" + persons.elementAt(1) + "(" + strength + ")";
 	}
 }

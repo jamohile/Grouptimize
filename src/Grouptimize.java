@@ -9,23 +9,63 @@ public class Grouptimize {
 	static int numChoices;
 	static PersonContainer personContainer;
 	static Vector<Solution> solutions;
-
+	static Vector<Flag> flags;
+	
+	//flags, declarations which will be implemented in the addFlags function
+	//static boolean ACCEPT_UNSORTED = false; //if true, the system will include solutions where some people could not be sorted. 
+	//static boolean ACCEPT_ZEROES = true; //if true, the solution will include solutions where some people have 0 strengths between them, if that guarantees the highest overall.
+	
 	public static void main(String[] args) {
-		show("Welcome to Grouptimize. This algorithm will sort induviduals into pairs to the best of its ability. In its current state, this program can only compute solutions for an EVEN number of people.");
-		try {
-			in = new Scanner(new FileReader("input2.txt"));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		personContainer = new PersonContainer();
 		solutions = new Vector<>();
-		initialize();
-		calculateBest();
-
+		flags = new Vector<>();
+		show("Welcome to Grouptimize. This algorithm will sort induviduals into pairs to the best of its ability. In its current state, this program can only compute solutions for an EVEN number of people.");
+		addFlags();
+		setupFlags(); //sets values for flags
+		askYesNo("Would You like to run the calculation?");
+		initialize(); //reads in data file, sets up connections
+		calculateBest(); //calculates the optimal solution(s)
 	}
-
+	public static void addFlags(){
+		flags.add(new Flag("ACCEPT_UNSORTED", "Would you like to see solutions where not everyone is sorted into a group, if that is the best overall solution found?"));
+		flags.add(new Flag("ACCEPT_ZEROES", "Would you like to see solutions where some pairs have a strength of zero, if that is the best overall solution found?"));
+	}
+	public static void setupFlags(){
+		show("Just a few questions to configure the algorithm:");
+		for(Flag flag : flags){
+			flag.value = askYesNo(flag.prompt);
+		}
+		show("Here are your current settings: ");
+		for(Flag flag : flags){
+			show(flag.toString());
+		}
+		boolean correct = askYesNo("Are these settings correct?");
+		if(correct){
+			show("Thank you, setup has completed.");
+		}else{
+			show("Alright, let's try again.");
+			setupFlags();
+		}
+	}
+	public static boolean askYesNo(String prompt){
+		Scanner input = new Scanner(System.in);
+		String response = "";
+		show("\t" + prompt);
+		show("\tEnter y or n, followed by ENTER: ", true);
+		response = input.next();
+		if(response.equals("n")){
+			return false;
+		}else{
+			return true;
+		}
+		
+	}
 	public static void initialize() {
+		try {
+			in = new Scanner(new FileReader("input3.txt"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 		numPeople = in.nextInt();
 		numChoices = in.nextInt();
 		// initialise people into network
@@ -53,7 +93,7 @@ public class Grouptimize {
 			int currentIndex = startIndex;
 
 			Solution solution = new Solution();
-			Boolean solutionFailed = false;
+			Boolean solutionIncomplete = false;//indicates that there is a chance not all induviduals were sorted into groups
 			for (int counter = 0; counter < numPeople; counter++) {
 				// do stuff
 				Person currentPerson = personContainer.getPeople().elementAt(currentIndex);
@@ -79,11 +119,17 @@ public class Grouptimize {
 					}
 				}
 				if (!fulfilled) {
-					solutionFailed = true;
-					break;
+					solutionIncomplete= true;
 				}
 			}
-			if (!solutionFailed) {
+			if ((solutionIncomplete && Flag.getFlagByName("ACCEPT_UNSORTED", flags).value) || !solutionIncomplete) {
+				if (solutionIncomplete) {
+					for (Person person : personContainer.getPeople()) {
+						if (person.isAvailable()) {
+							solution.addUngrouped(person);
+						}
+					}
+				}
 				boolean redundant = false;
 				solution.identifiers.sort(null);
 				for (Solution prevSolution : solutions) {
@@ -93,10 +139,21 @@ public class Grouptimize {
 						break;
 					}
 				}
+				boolean hasZero;
 				if (!redundant) {
-					solutions.add(solution);
+					hasZero = false;
+					for (PersonPair personPair : solution.pairs) {
+						if (personPair.strength == 0) {
+							hasZero = true;
+							break;
+						}
+					} 
+					if (!redundant &&((hasZero && Flag.getFlagByName("ACCEPT_ZEROES", flags).value) || !hasZero)) {
+						solutions.add(solution);
+					} 
 				}
 			}
+			
 		}
 		// calculation has finished
 		solutions.sort(null);
@@ -115,14 +172,14 @@ public class Grouptimize {
 			}
 		}
 	}
-
-	public static void removeRedundancy() {
-		for (Solution solution : solutions) {
-
-		}
-	}
-
 	public static void show(Object msg) {
-		System.out.println(msg);
+		show(msg, false);
+	}
+	public static void show(Object msg, boolean noLineFeed) {
+		if(noLineFeed){
+			System.out.print(msg);
+		}else{
+			System.out.println(msg);	
+		}
 	}
 }

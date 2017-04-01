@@ -1,11 +1,11 @@
-6
+5
 3
 John
 Jack
 Jim
 Jake
 Dave
-Curtis
+
 	
 John
 	Jack
@@ -26,8 +26,4 @@ Jake
 Dave
 	Jack
 	John
-	Curtis
-Curtis
-	Dave
-	Jack
-	John
+	Jake
