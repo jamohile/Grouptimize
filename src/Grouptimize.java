@@ -6,15 +6,16 @@ import java.util.Vector;
 public class Grouptimize {
 	static Scanner in;
 	static int numPeople;
+	static int numPerGroup;
 	static int numChoices;
 	static PersonContainer personContainer;
 	static Vector<Solution> solutions;
 	static Vector<Flag> flags;
-	
+
 	//flags, declarations which will be implemented in the addFlags function
 	//static boolean ACCEPT_UNSORTED = false; //if true, the system will include solutions where some people could not be sorted. 
 	//static boolean ACCEPT_ZEROES = true; //if true, the solution will include solutions where some people have 0 strengths between them, if that guarantees the highest overall.
-	
+
 	public static void main(String[] args) {
 		personContainer = new PersonContainer();
 		solutions = new Vector<>();
@@ -58,15 +59,16 @@ public class Grouptimize {
 		}else{
 			return true;
 		}
-		
+
 	}
 	public static void initialize() {
 		try {
-			in = new Scanner(new FileReader("input3.txt"));
+			in = new Scanner(new FileReader("input.txt"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		numPeople = in.nextInt();
+		numPerGroup = in.nextInt();
 		numChoices = in.nextInt();
 		// initialise people into network
 		for (int x = 1; x <= numPeople; x++) {
@@ -108,17 +110,23 @@ public class Grouptimize {
 					continue;
 				}
 				Boolean fulfilled = false;
+				PersonContainer tempContainer = new PersonContainer();
+				tempContainer.getPeople().add(currentPerson);
 				for (Choice choice : currentPerson.choices) {
 					if (choice.person.isAvailable()) {
-						PersonPair pair = new PersonPair(currentPerson, choice.person);
-						solution.addPair(pair);
+						tempContainer.getPeople().add(choice.person);
 						currentPerson.setAvailable(false);
 						choice.person.setAvailable(false);
 						fulfilled = true;
-						break;
+						if (tempContainer.people.size() >= numPerGroup) {
+							break;
+						}
 					}
 				}
-				if (!fulfilled) {
+				if (fulfilled) {
+					PersonGroup group = new PersonGroup(tempContainer);
+					solution.addGroup(group);
+				} else {
 					solutionIncomplete= true;
 				}
 			}
@@ -142,8 +150,8 @@ public class Grouptimize {
 				boolean hasZero;
 				if (!redundant) {
 					hasZero = false;
-					for (PersonPair personPair : solution.pairs) {
-						if (personPair.strength == 0) {
+					for (PersonGroup personGroup : solution.groups) {
+						if (personGroup.strength <= 0) {
 							hasZero = true;
 							break;
 						}
@@ -153,23 +161,27 @@ public class Grouptimize {
 					} 
 				}
 			}
-			
+
 		}
+		
 		// calculation has finished
 		solutions.sort(null);
 		if (solutions.isEmpty()) {
 			show("Sorry...no solution could be found for this sample");
 		} else {
-			int highestStrength = solutions.elementAt(0).strength;
-			boolean seperatedBadChoices = false;
-			show("RECCOMENDED\n======================================");
-			for (Solution solution : solutions) {
-				if(solution.strength != highestStrength && !seperatedBadChoices){
-					seperatedBadChoices = true;
-					show("NOT RECCOMENDED\n======================================");
-				}
-				show(solution);
+			showSolutions();
+		}
+	}
+	private static void showSolutions() {
+		int highestStrength = solutions.elementAt(0).strength;
+		boolean seperatedBadChoices = false;
+		show("RECCOMENDED\n======================================");
+		for (Solution solution : solutions) {
+			if(solution.strength != highestStrength && !seperatedBadChoices){
+				seperatedBadChoices = true;
+				show("NOT RECCOMENDED\n======================================");
 			}
+			show(solution);
 		}
 	}
 	public static void show(Object msg) {

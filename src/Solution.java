@@ -4,12 +4,17 @@ public class Solution implements Comparable<Solution>{
 	public int strength;
 	public Vector<Person> ungrouped;
 	public Vector<String> identifiers;
-	public Vector<PersonPair> pairs;
+	public Vector<PersonGroup> groups;
 	
 	public Solution() {
-		pairs = new Vector<>();
 		identifiers = new Vector<>();
 		ungrouped = new Vector<>();
+		groups = new Vector<PersonGroup>();
+	}
+	public Solution(Solution solution){
+		identifiers = new Vector<>(solution.identifiers);
+		ungrouped = new Vector<>(solution.ungrouped);
+		groups = new Vector<PersonGroup>(solution.groups);
 	}
 	@Override
 	public int compareTo(Solution other) {
@@ -19,11 +24,11 @@ public class Solution implements Comparable<Solution>{
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		String pairsString = "";
-		for(PersonPair pair : pairs){
-			pairsString += pair.toString();
+		String groupString = "";
+		for(PersonGroup group : groups){
+			groupString += group.toString();
 		}
-		return "Strength: " + strength + pairsString + returnUngrouped() + "\n----------------------------";
+		return "Strength: " + strength + groupString + returnUngrouped() + "\n----------------------------";
 	}
 	String returnUngrouped(){
 		if(ungrouped.size() > 0){
@@ -33,13 +38,13 @@ public class Solution implements Comparable<Solution>{
 			}
 			return ungroupedString;
 		}else{
-			return "Everyone was grouped.";
+			return "\nEveryone was grouped.";
 		}
 	}
-	public void addPair(PersonPair pair){
-		pairs.add(pair);
-		strength += pair.strength;
-		identifiers.add(pair.identifier);
+	public void addGroup(PersonGroup group){
+		groups.add(group);
+		strength += group.strength;
+		identifiers.add(group.identifier);
 	}
 	public void addUngrouped(Person person){
 		ungrouped.add(person);
