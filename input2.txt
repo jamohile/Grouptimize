@@ -1,0 +1,33 @@
+6
+3
+John
+Jack
+Jim
+Jake
+Dave
+Curtis
+	
+John
+	Jack
+	Jim
+	Jake
+Jack
+	Jim
+	Jake
+	John
+Jim
+	John
+	Jack
+	Jake
+Jake
+	John
+	Jack
+	Jim
+Dave
+	Jack
+	John
+	Curtis
+Curtis
+	Dave
+	Jack
+	John

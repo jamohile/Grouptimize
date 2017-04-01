@@ -1,0 +1,134 @@
+//The system cannot find a solution to this situation.
+26
+3
+A
+B
+C
+D
+E
+F
+G
+H
+I
+J
+K
+L
+M
+N
+O
+P
+Q
+R
+S
+T
+U
+V
+W
+X
+Y
+Z
+
+A
+	Q
+	I
+	J
+B
+	C
+	D
+	E
+C
+	G
+	H
+	I
+D
+	I
+	L
+	K
+E
+	O
+	N
+	P
+F
+	T
+	U
+	V
+G
+	W
+	Y
+	X
+H
+	V
+	R
+	S
+I
+	W
+	K
+	L
+J
+	Z
+	Y
+	A
+K
+	C
+	D
+	A
+L
+	E
+	R
+	Y
+M
+	P
+	I
+	U
+N
+	Y
+	R
+	E
+O
+	Q
+	W
+	E
+P
+	S
+	T
+	U
+Q
+	W
+	X
+	Y
+R
+	Q
+	T
+	A
+S
+	E
+	F
+	G
+T
+	P
+	O
+	L
+U
+	R
+	E
+	W
+V
+	T
+	R
+	E
+W
+	U
+	I
+	D
+X
+	W
+	Y
+	A
+Y
+	Z
+	X
+	W
+Z
+	A
+	B
+	C
