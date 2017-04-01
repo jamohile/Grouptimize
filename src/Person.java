@@ -1,6 +1,6 @@
 import java.util.Vector;
 
-public class Person {
+public class Person implements Comparable<Person>{
 	static int lastID = 0;
 	int id;
 	boolean available = true;
@@ -34,5 +34,9 @@ public class Person {
 	public String toString() {
 		// TODO Auto-generated method stub
 		return name;
+	}
+	@Override
+	public int compareTo(Person other) {
+		return -(Integer.compare(this.id, other.id));
 	}
 }

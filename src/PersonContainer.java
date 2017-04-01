@@ -1,7 +1,7 @@
 import java.util.Vector;
 
 public class PersonContainer {
-	private Vector<Person> people;
+	protected Vector<Person> people;
 
 	public PersonContainer(){
 		people = new Vector<Person>();
