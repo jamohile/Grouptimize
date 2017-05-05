@@ -4,23 +4,21 @@ import java.util.Scanner;
 import java.util.Vector;
 
 public class Grouptimize {
-	static Scanner in;
-	static int numPeople;
-	static int numPerGroup;
-	static int numChoices;
-	static PersonContainer personContainer;
-	static Vector<Solution> solutions;
-	static Vector<Flag> flags;
-
-	//flags, declarations which will be implemented in the addFlags function
-	//static boolean ACCEPT_UNSORTED = false; //if true, the system will include solutions where some people could not be sorted. 
-	//static boolean ACCEPT_ZEROES = true; //if true, the solution will include solutions where some people have 0 strengths between them, if that guarantees the highest overall.
+	//these are environment variable which will be used to run the program
+	static Scanner in; //the java runtime io input
+	static int numPeople;//number of people
+	static int numPerGroup; //desired number of people per group
+	static int numChoices; //the number of choices each person will make
+	static PersonContainer personContainer; //an object which stores people to be sorted
+	static Vector<Solution> solutions; //stores all solutions generated
+	static Vector<Flag> flags; //stores flags, set by user,  which are binary options used to control program execution
 
 	public static void main(String[] args) {
+		//initialize storage containers
 		personContainer = new PersonContainer();
 		solutions = new Vector<>();
 		flags = new Vector<>();
-		show("Welcome to Grouptimize. This algorithm will sort induviduals into pairs to the best of its ability. In its current state, this program can only compute solutions for an EVEN number of people.");
+		show("Welcome to Grouptimize. This algorithm will sort individuals into pairs to the best of its ability. In its current state, this program can only compute solutions for an EVEN number of people.");
 		addFlags();
 		setupFlags(); //sets values for flags
 		askYesNo("Would You like to run the calculation?");
@@ -28,10 +26,12 @@ public class Grouptimize {
 		calculateBest(); //calculates the optimal solution(s)
 	}
 	public static void addFlags(){
+		//prompt user for program moderation info.
 		flags.add(new Flag("ACCEPT_UNSORTED", "Would you like to see solutions where not everyone is sorted into a group, if that is the best overall solution found?"));
 		flags.add(new Flag("ACCEPT_ZEROES", "Would you like to see solutions where some pairs have a strength of zero, if that is the best overall solution found?"));
 	}
 	public static void setupFlags(){
+		//loop through flags, ask user for input for each as a YES NO question
 		show("Just a few questions to configure the algorithm:");
 		for(Flag flag : flags){
 			flag.value = askYesNo(flag.prompt);
@@ -49,6 +49,7 @@ public class Grouptimize {
 		}
 	}
 	public static boolean askYesNo(String prompt){
+		//present prompt to user, get input, return true or false
 		Scanner input = new Scanner(System.in);
 		String response = "";
 		show("\t" + prompt);
@@ -62,6 +63,7 @@ public class Grouptimize {
 
 	}
 	public static void initialize() {
+		//read in a list of people to be sorted from a text file, input them into relevant containers in a formatted manner.
 		try {
 			in = new Scanner(new FileReader("input.txt"));
 		} catch (FileNotFoundException e) {
@@ -88,6 +90,7 @@ public class Grouptimize {
 	}
 
 	public static void calculateBest() {
+		//starts sorting from each person in a seperate solution, gives each solution a point based score. Ranks solutions based on score.
 		for (Person startingPerson : personContainer.getPeople()) {
 			// reset all people
 			personContainer.resetAvailability();
@@ -95,7 +98,7 @@ public class Grouptimize {
 			int currentIndex = startIndex;
 
 			Solution solution = new Solution();
-			Boolean solutionIncomplete = false;//indicates that there is a chance not all induviduals were sorted into groups
+			Boolean solutionIncomplete = false;//indicates that there is a chance not all individuals were sorted into groups
 			for (int counter = 0; counter < numPeople; counter++) {
 				// do stuff
 				Person currentPerson = personContainer.getPeople().elementAt(currentIndex);
