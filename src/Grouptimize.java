@@ -99,20 +99,23 @@ public class Grouptimize {
 
 			Solution solution = new Solution();
 			Boolean solutionIncomplete = false;//indicates that there is a chance not all individuals were sorted into groups
+			//Iterate through each person, assigning them their best available choice.
 			for (int counter = 0; counter < numPeople; counter++) {
-				// do stuff
+				//counter is used since for this function, number is arbitrary
 				Person currentPerson = personContainer.elementAt(currentIndex);
-				// bump index
-				currentIndex = (currentIndex == personContainer.getSize - 1) ? 0 : currentIndex += 1;
+				// bump currentIndex as neseccary
+				currentIndex = (currentIndex == personContainer.getSize() - 1) ? 0 : currentIndex += 1;
 				// do stuff
 				if (!currentPerson.isAvailable()) {
 					continue;
 				}
+				//A flag indicating whether or not currentPerson has been grouped
 				Boolean fulfilled = false;
-				PersonContainer tempContainer = new PersonContainer();
-				tempContainer.addPerson(currentPerson);
+				//a temporary container to hold potential groupings
+				PersonContainer groupContainer = new PersonContainer();
+				groupContainer.addPerson(currentPerson);
 				for (Choice choice : currentPerson.choices) {
-					if (choice.person.isAvailable()) {
+					if (choice.isAvailable()) {
 						tempContainer.addPerson(choice.person);
 						currentPerson.setAvailable(false);
 						choice.person.setAvailable(false);
