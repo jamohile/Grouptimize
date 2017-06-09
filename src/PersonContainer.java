@@ -20,6 +20,13 @@ public class PersonContainer {
 	public void addPerson(Person person){
 	    people.add(Person);
 	}
+	public Person elementAt(int index){
+		return people.elementAt(index);
+	}
+	//returns the number of people in the container
+	public int getSize(){
+	    return people.size();
+	}
 	public void resetAvailability() {
 		for(Person person : people){
 			person.setAvailable(true);
