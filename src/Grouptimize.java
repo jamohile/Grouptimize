@@ -116,11 +116,11 @@ public class Grouptimize {
 				groupContainer.addPerson(currentPerson);
 				for (Choice choice : currentPerson.choices) {
 					if (choice.isAvailable()) {
-						tempContainer.addPerson(choice.person);
+						groupContainer.addPerson(choice.person);
 						currentPerson.setAvailable(false);
-						choice.person.setAvailable(false);
+						choice.setUnavailable();
 						fulfilled = true;
-						if (tempContainer.people.size() >= numPerGroup) {
+						if (groupContainer.getSize() >= numPerGroup) {
 							break;
 						}
 					}
@@ -129,7 +129,7 @@ public class Grouptimize {
 					PersonGroup group = new PersonGroup(tempContainer);
 					solution.addGroup(group);
 				} else {
-					solutionIncomplete= true;
+					solutionIncomplete = true;
 				}
 			}
 			if ((solutionIncomplete && Flag.getFlagByName("ACCEPT_UNSORTED", flags).value) || !solutionIncomplete) {
