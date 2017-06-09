@@ -1,22 +1,22 @@
 
 public class Choice {
-	Person person;
+	PersonGroup people;
 	int strength;
 	public int getStrength() {
 		return strength;
 	}
 
-	public Choice(Person person, int strength) {
-		this.person = person;
+	public Choice(PersonGroup people, int strength) {
+		this.people = people;
 		this.strength = strength;
 	}
 	
-	public Person getPerson() {
-		return person;
+	public PersonGroup getPeople() {
+		return people;
 	}
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "-" + person.name;
+		return "-" + people.toString();
 	}
 }
