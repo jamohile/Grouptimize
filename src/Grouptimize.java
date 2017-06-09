@@ -101,13 +101,9 @@ public class Grouptimize {
 			Boolean solutionIncomplete = false;//indicates that there is a chance not all individuals were sorted into groups
 			for (int counter = 0; counter < numPeople; counter++) {
 				// do stuff
-				Person currentPerson = personContainer.getPeople().elementAt(currentIndex);
+				Person currentPerson = personContainer.elementAt(currentIndex);
 				// bump index
-				if (currentIndex == personContainer.getPeople().size() - 1) {
-					currentIndex = 0;
-				} else {
-					currentIndex += 1;
-				}
+				currentIndex = (currentIndex == personContainer.getSize - 1) ? 0 : currentIndex += 1;
 				// do stuff
 				if (!currentPerson.isAvailable()) {
 					continue;
