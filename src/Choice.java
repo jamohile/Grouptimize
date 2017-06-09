@@ -20,6 +20,14 @@ public class Choice {
 	public PersonGroup getPeople() {
 		return people;
 	}
+	public bool isAvailable(){
+		//renders a decision on the choice's availability, based on all constiuents
+		bool available = true;
+		for(Person person : people){
+			available = person.isAvailable();
+		}
+		return available;
+	}
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
