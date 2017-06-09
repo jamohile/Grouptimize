@@ -17,6 +17,9 @@ public class PersonContainer {
 		}
 		return null;
 	}
+	public void addPerson(Person person){
+	    people.add(Person);
+	}
 	public void resetAvailability() {
 		for(Person person : people){
 			person.setAvailable(true);
