@@ -75,7 +75,7 @@ public class Grouptimize {
 		// initialise people into network
 		for (int x = 1; x <= numPeople; x++) {
 			Person person = new Person(in.next());
-			personContainer.getPeople().add(person);
+			personContainer.addPerson(person);
 		}
 		// add connections between people in network
 		for (int x = 1; x <= numPeople; x++) {
@@ -114,10 +114,10 @@ public class Grouptimize {
 				}
 				Boolean fulfilled = false;
 				PersonContainer tempContainer = new PersonContainer();
-				tempContainer.getPeople().add(currentPerson);
+				tempContainer.addPerson(currentPerson);
 				for (Choice choice : currentPerson.choices) {
 					if (choice.person.isAvailable()) {
-						tempContainer.getPeople().add(choice.person);
+						tempContainer.addPerson(choice.person);
 						currentPerson.setAvailable(false);
 						choice.person.setAvailable(false);
 						fulfilled = true;
