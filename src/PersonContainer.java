@@ -20,6 +20,11 @@ public class PersonContainer {
 	public void addPerson(Person person){
 	    people.add(Person);
 	}
+	public void addPeople(PersonContainer people){
+		for(Person person : people){
+			people.add(person);
+		}
+	}
 	public Person elementAt(int index){
 		return people.elementAt(index);
 	}
